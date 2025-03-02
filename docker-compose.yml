@@ -7,6 +7,7 @@ services:
       - ./backend:/app
     environment:
       FLASK_ENV: development
+    command: ["flask", "--app", "./src", "run", "--host", "0.0.0.0", "--reload"]
     depends_on:
       - frontend
 

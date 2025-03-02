@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Heading from '../../components/heading';
+import axios from 'axios';
 
 export default function PhotosPage() {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -16,7 +17,16 @@ export default function PhotosPage() {
         if (selectedFiles.length > 0) {
             // Handle the file upload logic here
             selectedFiles.forEach(file => {
-                console.log('Uploading file:', file);
+                let formData = new FormData()
+                formData.append('file', file)
+
+                axios.post('http://localhost:5000/api/photo/upload', formData)
+                    .then(response => {
+                        console.log('Upload successful:', response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error uploading file:', error);
+                    });
             });
         }
     };
