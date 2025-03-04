@@ -9,9 +9,10 @@ python3 -m venv .venv
 source .venv/bin/activate
 
 # Upgrade pip to the latest version
-pip install -r requirements.txt
+echo "Installing ..."
+pip install -r requirements.txt --quiet
 
 # install serve
-npm install -g serve
-
-echo "Virtual environment installed and activated at .venv"
+cd ../frontend
+npm install --omit=dev --silent
+echo "Complete"

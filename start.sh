@@ -17,9 +17,9 @@ else
 fi
 
 # Start frontend in production mode if not already running
-if ! is_running "npm run start --port 3000"; then
+if ! is_running "npm run serve"; then
     cd ../frontend
-    npm run start --port 3000
+    npm run serve
 else
     echo "Next.js app is already running."
 fi
