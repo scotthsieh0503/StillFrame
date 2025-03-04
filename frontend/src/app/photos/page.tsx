@@ -31,7 +31,7 @@ export default function PhotosPage() {
         if (selectedFiles.length > 0) {
             // Handle the file upload logic here
             selectedFiles.forEach(file => {
-                let formData = new FormData()
+                const formData = new FormData()
                 formData.append('file', file)
 
                 axios.post('http://localhost:5000/api/photo/upload', formData)

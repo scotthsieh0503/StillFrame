@@ -1,4 +1,3 @@
-import { Head } from 'next/document';
 import React, { JSX } from 'react';
 
 type HeadingProps = {
