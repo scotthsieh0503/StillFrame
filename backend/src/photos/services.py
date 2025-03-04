@@ -28,7 +28,7 @@ def get_photos():
     if not os.path.exists(upload_path):
         return []
     
-    return os.listdir(upload_path)
+    return [f for f in os.listdir(upload_path) if allowed_file(f)]
 
 def delete_photo(photo_name):
     photo_path = get_photo(photo_name)

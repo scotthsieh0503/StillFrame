@@ -21,6 +21,11 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    # a simple page that says hello
+    @app.route('/')
+    def home():
+        return jsonify({"message": "Hello from StillFrame!"})
+
     # Import the blueprint and register it
     app.register_blueprint(photo_bp, url_prefix='/api/photo')
     return app
