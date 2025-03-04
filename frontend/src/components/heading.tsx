@@ -8,8 +8,8 @@ type HeadingProps = {
 
 
 const Heading: React.FC<HeadingProps> = ({ level = 1, className, ...props }) => {
-  const Element = `h${level}` as keyof JSX.IntrinsicElements; // Ensures that Element is a valid JSX element type
-  return <Element {...props} className={className} />;
+  const Element = `h${level}` as keyof JSX.IntrinsicElements;
+  return React.createElement(Element, { className, ...props });
 };
 
 export default Heading;
