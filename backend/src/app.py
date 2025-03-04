@@ -15,13 +15,12 @@ def create_app(test_config=None):
     # load the instance config, if it exists, when not testing
     app.config.from_object(Config)
 
-
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
-    
+
     # Import the blueprint and register it
     app.register_blueprint(photo_bp, url_prefix='/api/photo')
     return app
