@@ -11,4 +11,7 @@ source .venv/bin/activate
 # Upgrade pip to the latest version
 pip install -r requirements.txt
 
+# install serve
+npm install -g serve
+
 echo "Virtual environment installed and activated at .venv"
