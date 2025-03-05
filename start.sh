@@ -18,7 +18,7 @@ fi
 
 # Start frontend in production mode if not already running
 if ! is_running "npm run serve"; then
-    cd ../frontend
+    cd frontend
     npm run serve
 else
     echo "Next.js app is already running."
