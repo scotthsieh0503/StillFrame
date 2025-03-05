@@ -2,8 +2,12 @@ import os
 
 from flask import Flask, jsonify
 from flask_cors import CORS
-from .photos import photo_bp
+from .apps.photos import photo_bp
 from .config import Config
+from .display.display import Display
+from .display.display_controller import DisplayController
+from .apps.photos.photo_app import PhotoApp
+
 
  # create and configure the app
 def create_app(test_config=None):
@@ -28,4 +32,12 @@ def create_app(test_config=None):
 
     # Import the blueprint and register it
     app.register_blueprint(photo_bp, url_prefix='/api/photo')
+
+    #init photo app
+    photo_app = PhotoApp(app.config)
+    #setting up the display
+    display = Display()
+    controller = DisplayController(display, photo_app)
+    controller.start()
+
     return app

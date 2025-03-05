@@ -1,6 +1,6 @@
 from flask import request, jsonify, send_file
 from . import photo_bp
-import src.photos.services as photo_services
+import src.apps.photos.services as photo_services
 
 
 @photo_bp.route('/upload', methods=['POST'])
