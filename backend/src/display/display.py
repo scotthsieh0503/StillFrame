@@ -1,9 +1,10 @@
-from inky.auto import auto 
+from inky import InkInky_Impressions_7 as Inky
+# from inky.auto import auto 
 
 class Display:
     def __init__(self):
-        self.display = auto()
-        self.inky_display.set_border(self.inky_display.BLACK)
+        self.display = Inky()
+        self.display.set_border(self.display.BLACK)
 
         self.display_width = self.display.width
         self.display_height = self.display.height
@@ -12,6 +13,7 @@ class Display:
         if not image:
             raise ValueError("Image is required")
         
+
         image = self.crop_image(image, self.display_width, self.display_height)
         self.display.set_image(image)
         self.display.show()
