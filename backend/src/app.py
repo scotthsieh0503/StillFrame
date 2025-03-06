@@ -34,10 +34,10 @@ def create_app(test_config=None):
     app.register_blueprint(photo_bp, url_prefix='/api/photo')
 
     #init photo app
-    photo_app = PhotoApp(app.config)
+   # photo_app = PhotoApp(app.config)
     #setting up the display
     display = Display()
-    controller = DisplayController(display, photo_app)
-    controller.start()
+   # controller = DisplayController(display, photo_app)
+   # controller.start()
 
     return app

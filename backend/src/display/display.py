@@ -1,4 +1,5 @@
 from inky.inky_ac073tc1a import Inky
+import time
 # from inky.auto import auto 
 
 class Display:
@@ -6,8 +7,15 @@ class Display:
         self.display = Inky()
         self.display.set_border(self.display.BLACK)
 
+        color = self.display.GREEN
         self.display_width = self.display.width
         self.display_height = self.display.height
+        for y in range(inky.height):
+            for x in range(inky.width):
+                self.display.set_pixel(x, y, color)
+                self.display.set_border(color)
+        self.display.show()
+        time.sleep(5.0)
 
     def send_image(self, image):
         if not image:
