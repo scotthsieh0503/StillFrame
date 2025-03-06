@@ -1,4 +1,4 @@
-from inky import Inky_Impressions_7 as Inky
+from inky.inky_ac073tc1a import Inky_Impressions_7 as Inky
 # from inky.auto import auto 
 
 class Display:
