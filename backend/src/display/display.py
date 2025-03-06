@@ -1,23 +1,16 @@
 from inky.inky_ac073tc1a import Inky
-import time
-# from inky.auto import auto 
+# from inky.auto import auto -- my screen is not detectign properly
+from PIL import Image
+
 
 class Display:
     def __init__(self):
         self.display = Inky()
         self.display.set_border(self.display.BLACK)
-
-        color = self.display.GREEN
         self.display_width = self.display.width
         self.display_height = self.display.height
-        for y in range(self.display.height):
-            for x in range(self.display.width):
-                self.display.set_pixel(x, y, color)
-                self.display.set_border(color)
-        self.display.show()
-        time.sleep(5.0)
 
-    def send_image(self, image):
+    def show_image(self, image):
         if not image:
             raise ValueError("Image is required")
         
@@ -45,6 +38,7 @@ class Display:
         top = (image.height - new_height) / 2
         right = (image.width + new_width) / 2
         bottom = (image.height + new_height) / 2
-
-        image = image.crop((left, top, right, bottom))
-        return image
+        
+        image_cropped = image.crop((left, top, right, bottom))
+        image_resized = image_cropped.resize((self.display_width, self.display_height), Image.LANCZOS)
+        return image_resized 

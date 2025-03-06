@@ -1,5 +1,4 @@
 import os
-from flask import current_app
 
 PHOTO_DIR = "photos/"
 
@@ -44,5 +43,5 @@ def allowed_file(filename):
 
 def get_photo_path():
     """Get the absolute path of the photo directory."""
-    data_dir = current_app.config.get('DATA_DIR')
+    data_dir = 'data'
     return os.path.abspath(os.path.join(data_dir, PHOTO_DIR))
