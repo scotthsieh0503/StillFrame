@@ -10,8 +10,8 @@ class Display:
         color = self.display.GREEN
         self.display_width = self.display.width
         self.display_height = self.display.height
-        for y in range(inky.height):
-            for x in range(inky.width):
+        for y in range(self.display.height):
+            for x in range(self.display.width):
                 self.display.set_pixel(x, y, color)
                 self.display.set_border(color)
         self.display.show()
