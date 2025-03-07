@@ -1,7 +1,6 @@
 from inky.inky_ac073tc1a import Inky
 # from inky.auto import auto -- my screen is not detectign properly
-from PIL import Image
-from PIL import ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 
 class Display:
@@ -12,8 +11,9 @@ class Display:
     def show_image(self, image):
         if not image:
             image = Image.new("P", (self.display.width, self.display.height))
+            fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 40)
             draw = ImageDraw.Draw(image)
-            draw.text((10, 10), "Hello =)", fill=self.display.BLACK)
+            draw.text((10, 10), "Hello =)", font=fnt ,fill=(255, 255, 255, 255))
     
         image = self.crop_image(image, self.display.width, self.display.height)
         self.display.set_image(image)
