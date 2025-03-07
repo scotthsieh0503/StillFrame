@@ -3,20 +3,21 @@ import os
 from flask import Flask, jsonify
 from flask_cors import CORS
 from .apps.image import image_bp
-from .config import Config
 from .display.display_controller import DisplayController
 
-
- # create and configure the app
+# create and configure the app
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
     # Enable CORS
     CORS(app)
 
+    # Determine the configuration to use
+    env = os.getenv('FLASK_ENV', 'production')
+
     # load the instance config, if it exists, when not testing
-    app.config.from_object(Config)
-    app.logger
+    if test_config is not None:
+        app.config.from_mapping(test_config)
 
     # ensure the instance folder exists
     try:
@@ -33,7 +34,8 @@ def create_app(test_config=None):
     app.register_blueprint(image_bp, url_prefix='/api/image')
 
     #setting up the display
-    controller = DisplayController()
-    controller.start()
+    if env == 'production':
+        controller = DisplayController(env)
+        controller.start()
 
     return app

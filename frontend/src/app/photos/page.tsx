@@ -9,15 +9,17 @@ export default function PhotosPage() {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [photos, setPhotos] = useState<string[]>([]); // store the uploaded photos
     const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]); // store the uploaded photos
+    const STILLFRAME_API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
     // Fetch the uploaded photos
     useEffect(() => {
-        axios.get('http://localhost:5000/api/image/photo')
+        axios.get(`${STILLFRAME_API_URL}/api/image/photo`)
             .then((response: any) => {
-                setPhotos(response.data.result);
+            setPhotos(response.data.result);
             })
             .catch((error: any) => {
-                console.error('Error fetching photos:', error);
+            console.error('Error fetching photos:', error);
             })
     }, [])
 
@@ -34,7 +36,7 @@ export default function PhotosPage() {
                 const formData = new FormData()
                 formData.append('file', file)
 
-                axios.post('http://localhost:5000/api/image/photo/upload', formData)
+                axios.post(`${STILLFRAME_API_URL}/api/image/photo/upload`, formData)
                     .then((response: any) => {
                         //reload the useEffect to fetch the updated photos
                         setPhotos(prevPhotos => [...prevPhotos, response.data.result]);
