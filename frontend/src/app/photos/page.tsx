@@ -12,7 +12,7 @@ export default function PhotosPage() {
 
     // Fetch the uploaded photos
     useEffect(() => {
-        axios.get('http://localhost:5000/api/photo')
+        axios.get('http://localhost:5000/api/image/photo')
             .then((response: any) => {
                 setPhotos(response.data.result);
             })
@@ -34,7 +34,7 @@ export default function PhotosPage() {
                 const formData = new FormData()
                 formData.append('file', file)
 
-                axios.post('http://localhost:5000/api/photo/upload', formData)
+                axios.post('http://localhost:5000/api/image/photo/upload', formData)
                     .then((response: any) => {
                         //reload the useEffect to fetch the updated photos
                         setPhotos(prevPhotos => [...prevPhotos, response.data.result]);
