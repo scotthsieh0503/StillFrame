@@ -7,15 +7,12 @@ class Display:
     def __init__(self):
         self.display = Inky()
         self.display.set_border(self.display.BLACK)
-        self.display_width = self.display.width
-        self.display_height = self.display.height
 
     def show_image(self, image):
         if not image:
             raise ValueError("Image is required")
-        
-
-        image = self.crop_image(image, self.display_width, self.display_height)
+    
+        image = self.crop_image(image, self.display.width, self.display.height)
         self.display.set_image(image)
         self.display.show()
 
@@ -25,7 +22,7 @@ class Display:
         
 
         image_aspect_ratio = image.width / image.height
-        display_aspect_ratio = self.display_width / self.display_height
+        display_aspect_ratio = self.display.width / self.display.height
 
         if image_aspect_ratio > display_aspect_ratio:
             new_width = int(image.height * display_aspect_ratio)
@@ -40,5 +37,5 @@ class Display:
         bottom = (image.height + new_height) / 2
         
         image_cropped = image.crop((left, top, right, bottom))
-        image_resized = image_cropped.resize((self.display_width, self.display_height), Image.LANCZOS)
+        image_resized = image_cropped.resize((self.display.width, self.display.height), Image.LANCZOS)
         return image_resized 

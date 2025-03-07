@@ -18,7 +18,7 @@ def get_image(folder_name, image_name):
     upload_path = get_image_path(folder_name)
     image_path = os.path.join(upload_path, image_name)
     if not os.path.exists(image_path):
-        return None
+        raise ValueError(image_path + " not found")
     
     return image_path
 

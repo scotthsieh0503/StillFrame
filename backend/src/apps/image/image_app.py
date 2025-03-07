@@ -4,8 +4,6 @@ from src.apps.base_app import BaseApp
 import random
 import src.apps.image.services as image_services
 
-PHOTO_DIR = "image/"
-
 class ImageApp(BaseApp):
     def __init__(self, settings):
         super().__init__(settings)
@@ -15,6 +13,6 @@ class ImageApp(BaseApp):
         if not images:
             return None
         
-        random_photo = random.choice('photo')
+        random_photo = random.choice(images)
         image_path = image_services.get_image('photo', random_photo)
         return Image.open(image_path)
