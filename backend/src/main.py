@@ -3,6 +3,7 @@ import os
 from flask import Flask, jsonify
 from flask_cors import CORS
 from .apps.image import image_bp
+from .apps.settings import settings_bp
 from .display.display_controller import DisplayController
 
 # create and configure the app
@@ -32,6 +33,7 @@ def create_app(test_config=None):
 
     # Import the blueprint and register it
     app.register_blueprint(image_bp, url_prefix='/api/image')
+    app.register_blueprint(settings_bp, url_prefix='/api/setting')
 
     #setting up the display
     if env == 'production':
