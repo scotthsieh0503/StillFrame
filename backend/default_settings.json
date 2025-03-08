@@ -4,7 +4,6 @@
     "DISPLAY": {
         "SATURATION": 0.5,
         "CONTRAST": 1.0,
-        "ORIENTATION": "horizontal",
-        "COLOR": "color"
+        "ORIENTATION": "landscape"
     }
 }
