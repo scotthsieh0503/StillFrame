@@ -21,6 +21,6 @@ def get_setting(key):
 
 @settings_bp.route('/<key>', methods=['POST', 'PUT', 'PATCH'])
 def update_setting(key):
-    value = request.data
+    value = request.json
     setting = settings_service.update_setting(key, value)
     return jsonify({'message': 'success', 'result': setting})

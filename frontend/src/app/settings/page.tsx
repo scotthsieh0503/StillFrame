@@ -31,7 +31,7 @@ export default function SettingsPage() {
 
     const handleSave = (key: string, value: any) => {
         const updatedSettings = { ...settings, [key]: value };
-        axios.post(`${STILLFRAME_API_URL}/api/setting/${key}`, value)
+        axios.post(`${STILLFRAME_API_URL}/api/setting/${key}`, {key: value})
             .then(response => {
                 const data = response.data;
                 if (data.message === 'success') {
@@ -115,6 +115,9 @@ export default function SettingsPage() {
                                 <input
                                     className="setting-input"
                                     type="number"
+                                    step="60"
+                                    min="60"
+                                    max="3000"
                                     value={settings.UPDATE_INTERVAL}
                                     onChange={(e) => handleSave('UPDATE_INTERVAL', parseInt(e.target.value))}
                                 />
