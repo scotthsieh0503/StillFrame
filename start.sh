@@ -6,11 +6,11 @@ is_running() {
 }
 
 # Start backend in production mode if not already running
-if ! is_running "flask --app ./src/app.py run"; then
+if ! is_running "flask --app ./src/main.py run"; then
     cd backend
     source .venv/bin/activate
     export FLASK_ENV=production
-    flask --app ./src/app.py run --host 0.0.0.0 --port 5000 &
+    flask --app ./src/main.py run --host 0.0.0.0 --port 5000 &
     cd ..
 else
     echo "Flask app is already running."

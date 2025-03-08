@@ -11,21 +11,22 @@ class DisplayController:
         self.thread = None
         self.is_running = False
         self.display = Display()
-        self.update_interval = 60
+        self.update_interval = 300
         self.app = ImageApp(settings)
 
     def start(self):
-        logger.info("starting")
         self.update()
         if not self.thread or not self.thread.is_alive():
             self.is_running = True
             self.thread = threading.Thread(target=self.run, daemon=True)
             self.thread.start()
-            
+
     def update(self):
         logger.info("update image")
         image = self.app.get_image()
-        self.display.show_image(image)
+        
+        if image:
+            self.display.show_image(image)
         
     def run(self):
         while self.is_running:

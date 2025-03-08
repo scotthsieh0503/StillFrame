@@ -10,10 +10,7 @@ class Display:
 
     def show_image(self, image):
         if not image:
-            image = Image.new("P", (self.display.width, self.display.height))
-            fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 40)
-            draw = ImageDraw.Draw(image)
-            draw.text((10, 10), "Hello =)", font=fnt ,fill=(255, 255, 255, 255))
+            raise ValueError("Image is required")
     
         image = self.crop_image(image, self.display.width, self.display.height)
         self.display.set_image(image)

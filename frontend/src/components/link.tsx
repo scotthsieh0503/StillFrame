@@ -8,7 +8,7 @@ interface LinkProps {
 }
 
 const Link: React.FC<LinkProps> = ({ href, className, children, ...props }) => (
-  <NextLink href={href} className={className} {...props} passHref>{children}</NextLink>
+  <NextLink href={href} className={`${className} cursor-pointer`} {...props} passHref>{children}</NextLink>
 );
 
 export default Link;
