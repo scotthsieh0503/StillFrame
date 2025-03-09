@@ -4,8 +4,12 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 class Display:
-    def __init__(self):
+    def __init__(self, settings):
         self.display = Inky()
+        self.settings = settings
+        self.orientation = self.settings['ORIENTATION']
+        self.saturation = self.settings['SATURATION']
+        self.contrast = self.settings['CONTRAST']
         self.display.set_border(self.display.BLACK)
 
     def show_image(self, image):
@@ -13,7 +17,7 @@ class Display:
             raise ValueError("Image is required")
     
         image = self.crop_image(image, self.display.width, self.display.height)
-        self.display.set_image(image)
+        self.display.set_image(image, saturation=self.saturation)
         self.display.show()
 
     def crop_image(self, image, width, height):
@@ -22,7 +26,7 @@ class Display:
         
 
         image_aspect_ratio = image.width / image.height
-        display_aspect_ratio = self.display.width / self.display.height
+        display_aspect_ratio = width / height
 
         if image_aspect_ratio > display_aspect_ratio:
             new_width = int(image.height * display_aspect_ratio)
@@ -37,5 +41,5 @@ class Display:
         bottom = (image.height + new_height) / 2
         
         image_cropped = image.crop((left, top, right, bottom))
-        image_resized = image_cropped.resize((self.display.width, self.display.height), Image.LANCZOS)
+        image_resized = image_cropped.resize((width, height), Image.LANCZOS)
         return image_resized 

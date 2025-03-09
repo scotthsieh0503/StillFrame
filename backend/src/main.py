@@ -5,9 +5,11 @@ from flask_cors import CORS
 from .apps.image import image_bp
 from .apps.settings import settings_bp
 from .display.display_controller import DisplayController
+from .apps.settings import services as settings_service
 
 # create and configure the app
 def create_app(test_config=None):
+    settings = settings_service.get_settings()
     app = Flask(__name__, instance_relative_config=True)
 
     # Enable CORS
@@ -15,10 +17,6 @@ def create_app(test_config=None):
 
     # Determine the configuration to use
     env = os.getenv('FLASK_ENV', 'production')
-
-    # load the instance config, if it exists, when not testing
-    if test_config is not None:
-        app.config.from_mapping(test_config)
 
     # ensure the instance folder exists
     try:
@@ -37,7 +35,7 @@ def create_app(test_config=None):
 
     #setting up the display
     if env == 'production':
-        controller = DisplayController(env)
+        controller = DisplayController(env=env, settings=settings_service)
         controller.start()
 
     return app
