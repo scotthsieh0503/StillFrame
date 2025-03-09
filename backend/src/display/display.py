@@ -24,7 +24,6 @@ class Display:
         if not image:
             raise ValueError("Image is required")
         
-
         image_aspect_ratio = image.width / image.height
         display_aspect_ratio = width / height
 
@@ -43,3 +42,9 @@ class Display:
         image_cropped = image.crop((left, top, right, bottom))
         image_resized = image_cropped.resize((width, height), Image.LANCZOS)
         return image_resized 
+    
+    def update_settings(self, settings):
+        self.settings = settings
+        self.orientation = self.settings['ORIENTATION']
+        self.saturation = self.settings['SATURATION']
+        self.contrast = self.settings['CONTRAST']

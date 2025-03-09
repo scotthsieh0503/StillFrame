@@ -2,7 +2,7 @@
     "MODE": "photo",
     "UPDATE_INTERVAL": 300,
     "DISPLAY": {
-        "SATURATION": 0.5,
+        "SATURATION": 0.8,
         "CONTRAST": 1.0,
         "ORIENTATION": "landscape"
     }

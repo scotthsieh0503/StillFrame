@@ -54,7 +54,7 @@ class DisplayController:
         return self.current_app
     
     def update_settings(self):
-        self.display = Display(self.setting_service.get_setting('DISPLAY'))
+        self.display.update_settings(self.setting_service.get_setting('DISPLAY'))
         self.update_interval = self.setting_service.get_setting('UPDATE_INTERVAL')
 
     
