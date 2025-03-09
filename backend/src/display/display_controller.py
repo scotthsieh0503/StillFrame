@@ -15,9 +15,9 @@ class DisplayController:
         self.is_running = False
         self.display = Display(self.setting_service.get_setting('DISPLAY'))
         self.update_interval = self.setting_service.get_setting('UPDATE_INTERVAL')
+        self.current_mode = None
+        self.current_app = None
         self.poll_interval = 10
-        self.current_app = self.refresh_current_app()
-
 
     def start(self):
         self.update()
@@ -28,7 +28,8 @@ class DisplayController:
 
     def update(self):
         if self.env == 'production':
-            self.refresh_current_app()
+            self.update_settings()
+            self.update_current_app()
             image = self.current_app.get_image()
             if image:
                 self.display.show_image(image)
@@ -44,19 +45,27 @@ class DisplayController:
             except Exception as e:
                 logger.error(str(e))
             time.sleep(self.poll_interval)
+    
+    def update_current_app(self):
+        app_mode = self.setting_service.get_setting('MODE')
+        if(app_mode != self.current_mode):
+            self.current_mode = app_mode
+            self.current_app = self.__get_app_map().get(app_mode)
+        return self.current_app
+    
+    def update_settings(self):
+        self.display = Display(self.setting_service.get_setting('DISPLAY'))
+        self.update_interval = self.setting_service.get_setting('UPDATE_INTERVAL')
 
-
+    
     def __get_app_map(self):
         app_map = {
-            'photo': ImageApp(),
-            'art': ImageApp(),
-            'music': ImageApp()
+            'photo': ImageApp(self.setting_service.get_settings()),
+            'art': ImageApp(self.setting_service.get_settings()),
+            'music': ImageApp(self.setting_service.get_settings())
         }
         return app_map
-    
-    def refresh_current_app(self):
-        current_app_setting = self.setting_service.get_setting('MODE')
-        app_map = self.__get_app_map()
-        return app_map.get(current_app_setting, ImageApp())
+
+
 
     

@@ -34,8 +34,7 @@ def create_app(test_config=None):
     app.register_blueprint(settings_bp, url_prefix='/api/setting')
 
     #setting up the display
-    if env == 'production':
-        controller = DisplayController(env=env)
-        controller.start()
+    controller = DisplayController(env=env)
+    controller.start()
 
     return app
