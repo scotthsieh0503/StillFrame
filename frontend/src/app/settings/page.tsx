@@ -64,7 +64,7 @@ export default function SettingsPage() {
                                     type="number"
                                     step="0.1"
                                     min="0"
-                                    max="1"
+                                    max="2"
                                     value={settings.DISPLAY.CONTRAST}
                                     onChange={(e) => handleSave('DISPLAY', { ...settings.DISPLAY, CONTRAST: parseFloat(e.target.value) })}
                                 />
@@ -87,7 +87,7 @@ export default function SettingsPage() {
                                     type="number"
                                     step="0.1"
                                     min="0"
-                                    max="1"
+                                    max="2"
                                     value={settings.DISPLAY.SATURATION}
                                     onChange={(e) => handleSave('DISPLAY', { ...settings.DISPLAY, SATURATION: parseFloat(e.target.value) })}
                                 />
