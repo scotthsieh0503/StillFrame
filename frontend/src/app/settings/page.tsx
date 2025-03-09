@@ -8,8 +8,6 @@ import './settings.css'; // Import the CSS file
 
 export default function SettingsPage() {
     const [settings, setSettings] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const STILLFRAME_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
@@ -19,13 +17,11 @@ export default function SettingsPage() {
                 if (data.message === 'success') {
                     setSettings(data.result);
                 } else {
-                    setError('Failed to fetch settings');
+                    
                 }
-                setLoading(false);
             })
             .catch(() => {
-                setError('Failed to fetch settings');
-                setLoading(false);
+
             });
     }, []);
 
@@ -41,11 +37,10 @@ export default function SettingsPage() {
                 if (data.message === 'success') {
                     setSettings(updatedSettings);
                 } else {
-                    setError('Failed to save settings');
+
                 }
             })
             .catch(() => {
-                setError('Failed to save settings');
             });
     };
 

@@ -8,7 +8,7 @@ export default function ImageUploader({folder}: {folder: string}) {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [photos, setPhotos] = useState<string[]>([]); // store the uploaded photos
     const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]); // store the uploaded photos
-    const STILLFRAME_API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const STILLFRAME_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http:/stillframe:5000';
     const imageFolder = folder
 
     // Fetch the uploaded photos

@@ -35,7 +35,7 @@ def create_app(test_config=None):
 
     #setting up the display
     if env == 'production':
-        controller = DisplayController(env=env, settings=settings_service)
+        controller = DisplayController(env=env)
         controller.start()
 
     return app
