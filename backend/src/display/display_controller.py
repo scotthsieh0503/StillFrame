@@ -13,10 +13,12 @@ class DisplayController:
         self.setting_service = setting_service
         self.thread = None
         self.is_running = False
-        self.display = Display(self.setting_service.get_setting('DISPLAY'))
-        self.update_interval = self.setting_service.get_setting('UPDATE_INTERVAL')
+        self.current_settings = self.setting_service.get_settings()
+        self.display = Display(self.current_settings['DISPLAY'])
+        self.update_interval = self.current_settings['UPDATE_INTERVAL']
         self.current_mode = None
         self.current_app = None
+
         self.poll_interval = 10
 
     def start(self):
@@ -39,11 +41,14 @@ class DisplayController:
         while self.is_running:
             try:
                 counter += self.poll_interval
-                if counter >= self.update_interval:
+                settings = self.setting_service.get_settings()
+                settings_changed = self.__setting_changed(self.current_settings, settings)
+                if (counter >= self.update_interval or settings_changed):
                     self.update()
                     counter = 0
             except Exception as e:
                 logger.error(str(e))
+
             time.sleep(self.poll_interval)
     
     def update_current_app(self):
@@ -54,6 +59,7 @@ class DisplayController:
         return self.current_app
     
     def update_settings(self):
+        self.current_settings = self.setting_service.get_settings()
         self.display.update_settings(self.setting_service.get_setting('DISPLAY'))
         self.update_interval = self.setting_service.get_setting('UPDATE_INTERVAL')
 
@@ -67,5 +73,11 @@ class DisplayController:
         return app_map
 
 
+    def __setting_changed(self, current_settings, last_settings):
+        for key in current_settings:
+            if current_settings[key] != last_settings[key]:
+                return True
+        return False
+        
 
     
