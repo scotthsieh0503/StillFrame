@@ -31,7 +31,11 @@ export default function SettingsPage() {
 
     const handleSave = (key: string, value: any) => {
         const updatedSettings = { ...settings, [key]: value };
-        axios.post(`${STILLFRAME_API_URL}/api/setting/${key}`, {key: value})
+        axios.post(`${STILLFRAME_API_URL}/api/setting/${key}`, value, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
             .then(response => {
                 const data = response.data;
                 if (data.message === 'success') {
@@ -105,9 +109,9 @@ export default function SettingsPage() {
                                     value={settings.MODE}
                                     onChange={(e) => handleSave('MODE', e.target.value)}
                                 >
-                                    <option value="Photo">Photo</option>
-                                    <option value="Art">Art</option>
-                                    <option value="Music">Music</option>
+                                    <option value="photo">Photo</option>
+                                    <option value="art">Art</option>
+                                    <option value="music">Music</option>
                                 </select>
                             </label>
                             <label>
