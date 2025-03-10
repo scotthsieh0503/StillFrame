@@ -17,6 +17,7 @@ class Display:
             raise ValueError("Image is required")
         
         image = self.crop_image(image, self.display.width, self.display.height)
+        image = self.rotate_image(image)
         image = self.adjust_image(image)
         self.display.set_image(image, saturation=self.saturation)
         self.display.show()
@@ -24,11 +25,7 @@ class Display:
     def crop_image(self, image, width, height):
         if not image:
             raise ValueError("Image is required")
-        
-        # Rotate the image if the orientation is portrait and the image height is greater than the width
-        if self.orientation == 'portrait' and image.height > image.width:
-            image = image.rotate(90, expand=True)
-        
+                
         image_aspect_ratio = image.width / image.height
         display_aspect_ratio = width / height
 
@@ -57,6 +54,23 @@ class Display:
         image = color_enhancer.enhance(self.saturation)
         contrast_enhancer = ImageEnhance.Contrast(image)
         image = contrast_enhancer.enhance(self.contrast)
+        return image
+    
+    def rotate_image(self, image):
+        # rotate the image based on the orientation and if the image is taken in portrait mode or landscape mode
+        if not image:
+            raise ValueError("Image is required")
+        
+        if self.orientation == 'landscape':
+            if image.height > image.width:
+                image = image.rotate(90, expand=True)
+            return image
+        elif self.orientation == 'portrait':
+            if image.width > image.height:
+                image = image.rotate(90, expand=True)
+        else:
+            raise ValueError("Invalid orientation")
+        
         return image
     
     def update_settings(self, settings):

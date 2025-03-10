@@ -1,5 +1,7 @@
 from flask import request, jsonify, send_file
 from ..image import image_bp
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageOps
+import io
 import src.apps.image.services as image_service
 
 
@@ -33,3 +35,17 @@ def get_image(folder_name, image_name):
 def delete_image(folder_name, image_name):
     image_service.delete_image(folder_name, image_name)  # Pass folder_name
     return jsonify({'message': 'image deleted'}), 200
+
+@image_bp.route('/<folder_name>/<image_name>/show', methods=['GET'])
+def get_rotation_image(folder_name, image_name):
+    image_path = image_service.get_image(folder_name, image_name)  # Pass folder_name
+    if not image_path:
+        return jsonify({'error': 'image not found'}), 404
+
+    img = Image.open(image_path)
+    img = img.rotate(270, expand=True)
+
+    img_io = io.BytesIO()
+    img.save(img_io, 'JPEG')
+    img_io.seek(0)
+    return send_file(img_io, mimetype='image/jpeg')
