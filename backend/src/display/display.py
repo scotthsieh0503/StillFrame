@@ -15,20 +15,15 @@ class Display:
     def show_image(self, image):
         if not image:
             raise ValueError("Image is required")
-
-        image = ImageOps.exif_transpose(image)
+        
         image = self.crop_image(image, self.display.width, self.display.height)
         image = self.adjust_image(image)
-        self.display.set_image(image)
+        self.display.set_image(image, saturation=self.saturation)
         self.display.show()
 
     def crop_image(self, image, width, height):
         if not image:
             raise ValueError("Image is required")
-        
-        # Rotate the image if it is horizontal
-        if  image.height > image.width:
-            image = image.rotate(90, expand=True)
         
         image_aspect_ratio = image.width / image.height
         display_aspect_ratio = width / height
