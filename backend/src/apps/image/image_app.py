@@ -19,13 +19,14 @@ class ImageApp(BaseApp):
         random_photo = random.choice(images)
         image_path = image_services.get_image(self.mode, random_photo)
         
+        # get a second image and merge them when the orientation is not the same
         image = Image.open(image_path)
-        if self.settings['display']['orientation'] == 'landscape' and image.height > image.width:
+        if self.settings.get('ORIENTATION') == 'landscape' and image.height > image.width:
             image = self.getLandScapeImage()
-          #  image = self.mergeImages(image, image2, 'landscape')
-        elif self.settings['display']['orientation'] == 'portrait' and image.width > image.height:
-            image = self.getPortraitImage()
-         #   image = self.mergeImages(image, image2, 'portrait')
+            image2 = self.mergeImages(image, image2, 'landscape')
+        elif self.settings.get('ORIENTATION') == 'portrait' and image.width > image.height:
+            image2 = self.getPortraitImage()
+            image = self.mergeImages(image, image2, 'portrait')
         return image
         
     def getLandScapeImage(self):
