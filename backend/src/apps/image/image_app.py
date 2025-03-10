@@ -8,7 +8,8 @@ class ImageApp(BaseApp):
     def __init__(self, settings):
         super().__init__(settings)
         self.settings = settings
-        self.mode = self.__get_mode_from_settings()
+        self.mode = self.settings.get('MODE', 'photo')
+        self.orientation = self.settings.get('DISPLAY', {}).get('ORIENTATION', 'landscape')
 
 
     def get_image(self):
@@ -21,10 +22,10 @@ class ImageApp(BaseApp):
         
         # get a second image and merge them when the orientation is not the same
         image = Image.open(image_path)
-        if self.settings.get('ORIENTATION') == 'landscape' and image.height > image.width:
+        if self.orientation == 'landscape' and image.height > image.width:
             image = self.getLandScapeImage()
             image2 = self.mergeImages(image, image2, 'landscape')
-        elif self.settings.get('ORIENTATION') == 'portrait' and image.width > image.height:
+        elif self.orientation == 'portrait' and image.width > image.height:
             image2 = self.getPortraitImage()
             image = self.mergeImages(image, image2, 'portrait')
         return image
@@ -57,7 +58,4 @@ class ImageApp(BaseApp):
         else:
             merged_image = image1
         return merged_image
-        
-    def __get_mode_from_settings(self):
-        mode = self.settings.get('MODE', 'photo')
-        return mode
+    
