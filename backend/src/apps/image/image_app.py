@@ -9,8 +9,7 @@ class ImageApp(BaseApp):
         super().__init__(settings)
         self.settings = settings
         self.mode = self.settings.get('MODE', 'photo')
-        self.orientation = self.settings.get('DISPLAY', {}).get('ORIENTATION', 'landscape')
-
+        self.orientation = self.settings.get('DISPLAY').get('ORIENTATION', 'landscape')
 
     def get_image(self):
         images = image_services.get_images(self.mode)
