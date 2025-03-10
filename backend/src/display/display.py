@@ -16,8 +16,8 @@ class Display:
         if not image:
             raise ValueError("Image is required")
         
-        image = self.crop_image(image, self.display.width, self.display.height)
         image = self.rotate_image(image)
+        image = self.crop_image(image, self.display.width, self.display.height)
         image = self.adjust_image(image)
         self.display.set_image(image, saturation=self.saturation)
         self.display.show()
@@ -61,17 +61,17 @@ class Display:
         if not image:
             raise ValueError("Image is required")
         
-        if self.orientation == 'landscape':
-            if image.height > image.width:
-                image = image.rotate(90, expand=True)
-            return image
-        elif self.orientation == 'portrait':
-            if image.width > image.height:
-                image = image.rotate(90, expand=True)
-        else:
-            raise ValueError("Invalid orientation")
+        # if self.orientation == 'landscape':
+        #     if image.height > image.width:
+        #         image = image.rotate(90, expand=True)
+        #     return image
+        # elif self.orientation == 'portrait':
+        #     if image.width > image.height:
+        #         image = image.rotate(90, expand=True)
+        # else:
+        #     raise ValueError("Invalid orientation")
         
-        return image
+        return image.rotate(180, expand=True)
     
     def update_settings(self, settings):
         self.settings = settings
