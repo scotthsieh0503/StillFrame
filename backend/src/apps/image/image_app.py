@@ -9,7 +9,6 @@ class ImageApp(BaseApp):
         super().__init__(settings)
         self.settings = settings
         self.mode = self.settings.get('MODE', 'photo')
-        self.orientation = self.settings.get('DISPLAY').get('ORIENTATION', 'landscape')
 
     def get_image(self):
         images = image_services.get_images(self.mode)
@@ -21,40 +20,5 @@ class ImageApp(BaseApp):
         
         # get a second image and merge them when the orientation is not the same
         image = Image.open(image_path)
-        if self.orientation == 'landscape' and image.height > image.width:
-            image2 = self.getPortraitImage()
-            image = self.mergeImages(image, image2, 'landscape')
-        elif self.orientation == 'portrait' and image.width > image.height:
-            image2 = self.getLandScapeImage()
-            image = self.mergeImages(image, image2, 'portrait')
         return image
         
-    def getLandScapeImage(self):
-        image = self.get_image()
-        while image.height > image.width:
-            image = self.get_image()
-        return image
-
-    def getPortraitImage(self):
-        image = self.get_image()
-        while image.width > image.height:
-            image = self.get_image()
-        return image  
-    
-    def mergeImages(self, image1, image2, orientation):
-        if orientation == 'portrait':
-            total_height = image1.height + image2.height
-            max_width = max(image1.width, image2.width)
-            merged_image = Image.new('RGB', (max_width, total_height))
-            merged_image.paste(image1, (0, 0))
-            merged_image.paste(image2, (0, image1.height))
-        elif orientation == 'landscape':
-            total_width = image1.width + image2.width
-            max_height = max(image1.height, image2.height)
-            merged_image = Image.new('RGB', (total_width, max_height))
-            merged_image.paste(image1, (0, 0))
-            merged_image.paste(image2, (image1.width, 0))
-        else:
-            merged_image = image1
-        return merged_image
-    
