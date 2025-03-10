@@ -25,6 +25,10 @@ class Display:
         if not image:
             raise ValueError("Image is required")
         
+        # Rotate the image if the orientation is portrait and the image height is greater than the width
+        if self.orientation == 'portrait' and image.height > image.width:
+            image = image.rotate(90, expand=True)
+        
         image_aspect_ratio = image.width / image.height
         display_aspect_ratio = width / height
 
