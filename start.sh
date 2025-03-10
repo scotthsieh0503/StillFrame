@@ -10,6 +10,8 @@ kill_process() {
     pkill -f "$1"
 }
 
+cd /app/StillFrame
+
 # Start backend in production mode
 if is_running "flask --app ./src/main.py run"; then
     echo "Flask app is already running. Killing the process..."
