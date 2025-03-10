@@ -27,7 +27,7 @@ class Display:
             raise ValueError("Image is required")
         
         # Rotate the image if it is horizontal
-        if image.width > image.height:
+        if image.height > image.width:
             image = image.rotate(90, expand=True)
         
         image_aspect_ratio = image.width / image.height
