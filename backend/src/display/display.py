@@ -16,9 +16,9 @@ class Display:
         if not image:
             raise ValueError("Image is required")
         
+       # image = self.rotate_image(image)
         image = self.crop_image(image, self.display.width, self.display.height)
         image = self.adjust_image(image)
-       # image = self.rotate_image(image)
         self.display.set_image(image, saturation=self.saturation)
         self.display.show()
 
