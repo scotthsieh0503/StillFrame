@@ -31,5 +31,4 @@ if is_running "npm run serve"; then
 fi
 
 cd frontend
-npm run serve &
-cd ..
+npm run serve
