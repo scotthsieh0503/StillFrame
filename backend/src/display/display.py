@@ -56,6 +56,17 @@ class Display:
         image = contrast_enhancer.enhance(self.contrast)
         return image
     
+    def rotate_image(self, image):
+        image = ImageOps.exif_transpose(image)
+        # rotate the image based on the orientation and if the image is taken in portrait mode or landscape mode
+        if not image:
+            raise ValueError("Image is required")
+        
+        if self.orientation == 'portrait':
+                image = image.rotate(90, expand=True)
+        
+        return image
+    
     def update_settings(self, settings):
         self.settings = settings
         self.orientation = self.settings['ORIENTATION']

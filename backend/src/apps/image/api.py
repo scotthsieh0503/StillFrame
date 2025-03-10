@@ -43,9 +43,9 @@ def get_rotation_image(folder_name, image_name):
     display = Display({'ORIENTATION': 'landscape', 'SATURATION': 1.0, 'CONTRAST': 1.0})
     image_path = image_service.get_image('photo', image_name)  # Pass folder_name
     image = Image.open(image_path)
+    image = display.rotate_image(image)
     image = display.crop_image(image, display.display.width, display.display.height)
     image = display.adjust_image(image)
-   # image = display.rotate_image(image)
     image_io = io.BytesIO()
     image.save(image_io, format='JPEG')
     image_io.seek(0)
