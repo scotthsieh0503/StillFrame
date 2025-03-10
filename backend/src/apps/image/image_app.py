@@ -17,8 +17,4 @@ class ImageApp(BaseApp):
         
         random_photo = random.choice(images)
         image_path = image_services.get_image(self.mode, random_photo)
-        
-        # get a second image and merge them when the orientation is not the same
-        image = Image.open(image_path)
-        return image
-        
+        return Image.open(image_path)
