@@ -71,7 +71,7 @@ class Display:
         # else:
         #     raise ValueError("Invalid orientation")
         
-        return image.rotate(180, expand=True)
+        return image.rotate(90, expand=True)
     
     def update_settings(self, settings):
         self.settings = settings
