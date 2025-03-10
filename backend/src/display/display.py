@@ -61,17 +61,17 @@ class Display:
         if not image:
             raise ValueError("Image is required")
         
-        # if self.orientation == 'landscape':
-        #     if image.height > image.width:
-        #         image = image.rotate(90, expand=True)
-        #     return image
-        # elif self.orientation == 'portrait':
-        #     if image.width > image.height:
-        #         image = image.rotate(90, expand=True)
-        # else:
-        #     raise ValueError("Invalid orientation")
+        if self.orientation == 'landscape':
+            if image.height > image.width:
+                image = image.rotate(180, expand=True)
+            return image
+        elif self.orientation == 'portrait':
+            if image.width > image.height:
+                image = image.rotate(90, expand=True)
+        else:
+            raise ValueError("Invalid orientation")
         
-        return image.rotate(90, expand=True)
+        return image
     
     def update_settings(self, settings):
         self.settings = settings
