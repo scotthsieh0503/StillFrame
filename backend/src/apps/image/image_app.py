@@ -10,6 +10,7 @@ class ImageApp(BaseApp):
         self.settings = settings
         self.mode = self.__get_mode_from_settings()
 
+
     def get_image(self):
         images = image_services.get_images(self.mode)
         if not images:
@@ -17,42 +18,45 @@ class ImageApp(BaseApp):
         
         random_photo = random.choice(images)
         image_path = image_services.get_image(self.mode, random_photo)
-        return Image.open(image_path)
+        
+        image = Image.open(image_path)
+        if self.settings['display']['orientation'] == 'landscape' and image.height > image.width:
+            image = self.getLandScapeImage()
+          #  image = self.mergeImages(image, image2, 'landscape')
+        elif self.settings['display']['orientation'] == 'portrait' and image.width > image.height:
+            image = self.getPortraitImage()
+         #   image = self.mergeImages(image, image2, 'portrait')
+        return image
+        
+    def getLandScapeImage(self):
+        image = self.get_image()
+        while image.height > image.width:
+            image = self.get_image()
+        return image
+
+    def getPortraitImage(self):
+        image = self.get_image()
+        while image.width > image.height:
+            image = self.get_image()
+        return image  
     
+    def mergeImages(self, image1, image2, orientation):
+        if orientation == 'portrait':
+            total_height = image1.height + image2.height
+            max_width = max(image1.width, image2.width)
+            merged_image = Image.new('RGB', (max_width, total_height))
+            merged_image.paste(image1, (0, 0))
+            merged_image.paste(image2, (0, image1.height))
+        elif orientation == 'landscape':
+            total_width = image1.width + image2.width
+            max_height = max(image1.height, image2.height)
+            merged_image = Image.new('RGB', (total_width, max_height))
+            merged_image.paste(image1, (0, 0))
+            merged_image.paste(image2, (image1.width, 0))
+        else:
+            merged_image = image1
+        return merged_image
+        
     def __get_mode_from_settings(self):
         mode = self.settings.get('MODE', 'photo')
         return mode
-    
-    def get_combined_portrait_image(self):
-        images = image_services.get_images(self.mode)
-        if not images:
-            return None
-        
-        portrait_images = [img for img in images if self.__is_portrait(img)]
-        if len(portrait_images) < 2:
-            return None
-        
-        first_image_path = image_services.get_image(self.mode, random.choice(portrait_images))
-        second_image_path = image_services.get_image(self.mode, random.choice(portrait_images))
-        
-        first_image = Image.open(first_image_path)
-        second_image = Image.open(second_image_path)
-        
-        combined_image = self.__combine_images(first_image, second_image)
-        return combined_image
-
-    def __is_portrait(self, image_name):
-        image_path = image_services.get_image(self.mode, image_name)
-        with Image.open(image_path) as img:
-            width, height = img.size
-            return height > width
-
-    def __combine_images(self, img1, img2):
-        total_width = img1.width + img2.width
-        max_height = max(img1.height, img2.height)
-        
-        combined_image = Image.new('RGB', (total_width, max_height))
-        combined_image.paste(img1, (0, 0))
-        combined_image.paste(img2, (img1.width, 0))
-        
-        return combined_image
