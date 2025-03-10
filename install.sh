@@ -17,5 +17,10 @@ cd ../frontend
 npm install --omit=dev --silent
 echo "Complete"
 
-# Add start.sh to run at startup using crontab
-(crontab -l 2>/dev/null | grep -q "@reboot /app/StillFrame/start.sh") || (crontab -l 2>/dev/null; echo "@reboot /app/StillFrame/start.sh") | crontab -
+# setup service file
+cd ..
+sudo cp stillframe.service /etc/systemd/system/stillframe.service
+sudo systemctl daemon-reload
+sudo systemctl enable stillframe
+sudo systemctl start stillframe
+echo "Service started"

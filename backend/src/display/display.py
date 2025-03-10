@@ -1,7 +1,6 @@
 from inky.inky_ac073tc1a import Inky
 # from inky.auto import auto -- my screen is not detectign properly
-from PIL import Image, ImageDraw, ImageFont
-from PIL import ImageEnhance 
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageOps
 
 
 class Display:
@@ -16,7 +15,8 @@ class Display:
     def show_image(self, image):
         if not image:
             raise ValueError("Image is required")
-    
+
+        image = ImageOps.exif_transpose(image)
         image = self.crop_image(image, self.display.width, self.display.height)
         image = self.adjust_image(image)
         self.display.set_image(image)
@@ -27,7 +27,7 @@ class Display:
             raise ValueError("Image is required")
         
         # Rotate the image if it is horizontal
-        if image.height > image.width:
+        if  image.height > image.width:
             image = image.rotate(90, expand=True)
         
         image_aspect_ratio = image.width / image.height
