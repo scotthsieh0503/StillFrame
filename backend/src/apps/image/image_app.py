@@ -23,8 +23,8 @@ class ImageApp(BaseApp):
         # get a second image and merge them when the orientation is not the same
         image = Image.open(image_path)
         if self.orientation == 'landscape' and image.height > image.width:
-            image = self.getLandScapeImage()
-            image2 = self.mergeImages(image, image2, 'landscape')
+            image2 = self.getLandScapeImage()
+            image = self.mergeImages(image, image2, 'landscape')
         elif self.orientation == 'portrait' and image.width > image.height:
             image2 = self.getPortraitImage()
             image = self.mergeImages(image, image2, 'portrait')
