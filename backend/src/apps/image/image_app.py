@@ -16,6 +16,6 @@ class ImageApp(BaseApp):
             self.images = image_services.get_images(self.mode)
 
         random_photo = random.choice(self.image_history)
-        self.images.remove(random_photo)
+        self.images.pop(self.images.index(random_photo))
         image_path = image_services.get_image(self.mode, random_photo)
         return Image.open(image_path)
