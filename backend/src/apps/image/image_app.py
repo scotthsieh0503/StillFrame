@@ -9,12 +9,13 @@ class ImageApp(BaseApp):
         super().__init__(settings)
         self.settings = settings
         self.mode = self.settings.get('MODE', 'photo')
+        self.images = None
 
     def get_image(self):
-        images = image_services.get_images(self.mode)
-        if not images:
-            return None
-        
-        random_photo = random.choice(images)
+        if not self.images:
+            self.images = image_services.get_images(self.mode)
+
+        random_photo = random.choice(self.image_history)
+        self.images.remove(random_photo)
         image_path = image_services.get_image(self.mode, random_photo)
         return Image.open(image_path)
