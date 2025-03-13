@@ -115,7 +115,7 @@ export default function SettingsPage() {
                                     className="setting-input"
                                     type="number"
                                     step="60"
-                                    min="60"
+                                    min="10"
                                     max="3000"
                                     value={settings.UPDATE_INTERVAL}
                                     onChange={(e) => handleSave('UPDATE_INTERVAL', parseInt(e.target.value))}
