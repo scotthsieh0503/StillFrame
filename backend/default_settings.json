@@ -5,5 +5,9 @@
         "SATURATION": 0.8,
         "CONTRAST": 1.0,
         "ORIENTATION": "landscape"
+    },
+    "SPOTIFY": {
+        "CLIENT_ID": "ENTER HERE",
+        "CLIENT_SECRET": "ENTER HERE"
     }
 }

@@ -12,6 +12,9 @@ export default function Home() {
           <Link href="/image/art">Art</Link>
         </div>
         <div>
+          <Link href="/music">Music</Link>
+        </div>
+        <div>
           <Link href="/settings">Settings</Link>
         </div>
       </main>
