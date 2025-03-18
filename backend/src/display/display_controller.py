@@ -3,6 +3,7 @@ import logging
 import threading
 import time
 from ..apps.image.image_app import ImageApp
+from ..apps.music.music_app import MusicApp
 from ..apps.settings import services as setting_service
 
 logger = logging.getLogger(__name__)
@@ -18,6 +19,7 @@ class DisplayController:
         self.update_interval = self.current_settings['UPDATE_INTERVAL']
         self.current_mode = None
         self.current_app = None
+        self.current_image = None
 
         self.poll_interval = 10
 
@@ -33,7 +35,8 @@ class DisplayController:
             self.update_settings()
             self.update_current_app()
             image = self.current_app.get_image()
-            if image:
+            if image and image != self.current_image:
+                self.current_image = image
                 self.display.show_image(image)
         
     def run(self):
@@ -68,7 +71,7 @@ class DisplayController:
         app_map = {
             'photo': ImageApp(self.setting_service.get_settings()),
             'art': ImageApp(self.setting_service.get_settings()),
-            'music': ImageApp(self.setting_service.get_settings())
+            'music': MusicApp(self.setting_service.get_settings())
         }
         return app_map
 

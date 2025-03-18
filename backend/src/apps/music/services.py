@@ -1,14 +1,32 @@
 from flask import request, jsonify
+import os
 import requests
 import base64
 import src.apps.settings.services as settings_service
 from PIL import Image
 
+IMAGE_DIR = "image/"
 
 def get_currently_playing_track():
     url = "https://api.spotify.com/v1/me/player/currently-playing"
     current_track = make_request(url)
     return current_track
+
+def generate_image_from_url(url):
+    tmp_file_name = "album_art.png"
+    display_setting = settings_service.get_setting('DISPLAY')
+    if display_setting['ORIENTATION'] == 'landscape':
+        width, height = 800, 480
+    else:
+        width, height = 480, 800
+    os.system(f'chromium-browser --headless --no-sandbox --disable-logging --screenshot={tmp_file_name} --window-size={width},{height} http://localhost:3000/music/currently-playing')
+
+    image = Image.open(tmp_file_name)
+    return image
+
+
+
+
 
 
 
