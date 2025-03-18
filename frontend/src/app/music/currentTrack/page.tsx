@@ -1,13 +1,18 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import axios from 'axios';
 
 const STILLFRAME_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+interface Track {
+    image: string;
+    name: string;
+    artist: string;
+}
+
 export default function CurrenTrack() {
-    const [currenTrack, setTrack] = useState(null);
+    const [currenTrack, setTrack] = useState<Track | null>(null);
 
     useEffect(() => {
         async function getCurrentTrack() {
