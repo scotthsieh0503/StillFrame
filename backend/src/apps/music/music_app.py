@@ -8,8 +8,7 @@ class MusicApp(BaseApp):
         super().__init__(settings)
         self.settings = settings
         self.image = None # List of all images in the folder
-        self.current_track = None # Current track being played
-        self.access_token = self.get_access_token()
+        self.current_track = {} # Current track being played
 
     def get_image(self):
         if not self.image:
@@ -17,30 +16,16 @@ class MusicApp(BaseApp):
             self.image = image
         return self.image
     
-    def save_spotify_settings(self, client_id, client_secret):
-        return music_service.save_spotify_settings(client_id, client_secret)
-    
-    def get_access_token(self):
-        spotify_settings = self.settings.get('SPOTIFY')
-        if not spotify_settings:
-           raise ValueError('Spotify settings not found please se it up again in the frontend')
-        self.settings.get('SPOTIFY').get('ACCESS_TOKEN')
-        return self.settings.get('SPOTIFY').get('ACCESS_TOKEN')
-    
-    def get_currently_playing_image(self):
-        image = music_service.get_currently_playing_image(self.access_token)
-        return image
-    
     def get_currently_playing_track(self):
-        current_track = self.current_track
+        current_track = self.current_track or {}
         try:
-            current_track = music_service.get_currently_playing_track(self.access_token)
+            result = music_service.get_currently_playing_track()
+            print(result)
+            current_track['name'] = result['item']['name']
+            current_track['artist'] = result['item']['artists'][0]['name']
+            current_track['image'] = result['item']['album']['images'][0]['url']
         except Exception as e:
-            if 'token expired' in str(e).lower():
-               # self.access_token = self.authenticate()
-                current_track = music_service.get_currently_playing_track(self.access_token)
-            else:
-                raise e
+            raise e
             
         self.current_track = current_track
         return current_track

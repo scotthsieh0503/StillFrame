@@ -5,44 +5,12 @@ import src.apps.settings.services as settings_service
 from PIL import Image
 
 
-def generate_tokens(client_id, client_secret, code):
-    url = "https://accounts.spotify.com/api/token"
-    data = {
-        'grant_type': 'authorization_code', 
-        'code': code, 
-        'redirect_uri': 'http://localhost:5000/api/music/spotify/callback'
-    }
-    headers = {
-        'Authorization': 'Basic ' + base64.b64encode(f"{client_id}:{client_secret}".encode()).decode(),
-    }
-    response = requests.post(url, data=data, headers=headers)
-    if response.status_code != 200:
-        raise ValueError(response.text)
-    
-    settings = settings_service.get_settings()
-    settings['SPOTIFY']['ACCESS_TOKEN'] = response.json()['access_token']
-    settings['SPOTIFY']['REFRESH_TOKEN'] = response.json()['refresh_token']
-    settings_service.update_settings(settings)
-    
-    return {'access_token': response.json()['access_token'], 'refresh_token': response.json()['refresh_token']}
-1
-def get_currently_playing_track(access_token):
-    if not access_token:
-        raise ValueError("Access token is required")
-    
+def get_currently_playing_track():
     url = "https://api.spotify.com/v1/me/player/currently-playing"
-    headers = {
-        'Authorization': f'Bearer {access_token}',
-    }
-    response = requests.get(url, headers=headers)
-    if response.status_code != 200:
-        raise ValueError(response.text, access_token)
-    return response.json()
+    current_track = make_request(url)
+    return current_track
 
-def get_currently_playing_image(access_token):
-    current_track = get_currently_playing_track(access_token)
-    image_url = current_track.get('item').get('album').get('images')[0].get('url')
-    image = Image.open(requests.get(image_url, stream=True).raw)
+
 
 def save_spotify_settings(client_id, client_secret):
     settings = settings_service.get_settings()
@@ -52,3 +20,59 @@ def save_spotify_settings(client_id, client_secret):
     }
     settings_service.update_settings(settings)
     return settings
+
+
+def make_request(url, method='GET', data=None):
+    settings = settings_service.get_settings()
+    access_token = settings['SPOTIFY'].get('ACCESS_TOKEN')
+    
+    if not access_token:
+        access_token = refresh_access_token()
+    
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+    }
+    
+    if method == 'GET':
+        response = requests.get(url, headers=headers)
+    elif method == 'POST':
+        response = requests.post(url, headers=headers, data=data)
+    else:
+        raise ValueError("Unsupported HTTP method")
+    
+    if response.status_code == 401:  # Unauthorized
+        access_token = refresh_access_token()
+        headers['Authorization'] = f'Bearer {access_token}'
+        if method == 'GET':
+            response = requests.get(url, headers=headers)
+        elif method == 'POST':
+            response = requests.post(url, headers=headers, data=data)
+    
+    return response.json()
+
+def refresh_access_token():
+    settings = settings_service.get_settings()
+    refresh_token = settings['SPOTIFY'].get('REFRESH_TOKEN')
+    if not refresh_token:
+        raise ValueError("Refresh token is missing")
+    
+    client_id = settings['SPOTIFY']['CLIENT_ID']
+    client_secret = settings['SPOTIFY']['CLIENT_SECRET']
+    
+    url = "https://accounts.spotify.com/api/token"
+    data = {
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token
+    }
+    headers = {
+        'Authorization': 'Basic ' + base64.b64encode(f"{client_id}:{client_secret}".encode()).decode(),
+    }
+    response = requests.post(url, data=data, headers=headers)
+    if response.status_code != 200:
+        raise ValueError(response.text)
+    
+    access_token = response.json()['access_token']
+    settings['SPOTIFY']['ACCESS_TOKEN'] = access_token
+    settings_service.update_settings(settings)
+    
+    return access_token

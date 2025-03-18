@@ -5,39 +5,41 @@ import Image from 'next/image';
 import axios from 'axios';
 
 const STILLFRAME_API_URL = process.env.NEXT_PUBLIC_API_URL;
-const SPOTIFY_API_URL = 'https://api.spotify.com';
 
 export default function CurrenTrack() {
-    const [albumArt, setAlbumArt] = useState('');
-    const [currentTrack, setCurrentTrack] = useState('');
+    const [currenTrack, setTrack] = useState(null);
 
     useEffect(() => {
-        const fetchNowPlaying = async () => {
+        async function getCurrentTrack() {
             try {
-                const tokenResponse = await axios.get(`${STILLFRAME_API_URL}/api/setting/SPOTIFY`);
-                const accessToken = tokenResponse.data.result.ACCESS_TOKEN;
-                const response = await axios.get(`${SPOTIFY_API_URL}/v1/me/player/currently-playing`, {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                });
-                console.log('response', response);
-                const data = response.data;
-                setCurrentTrack(data);
-                if (data && data.item && data.item.album && data.item.album.images) {
-                    setAlbumArt(data.item.album.images[0].url);
-                }
+                const response = await axios.get(`${STILLFRAME_API_URL}/api/music/currently-playing`);
+                setTrack(response.data);
             } catch (error) {
-                console.error('Error fetching now playing track:', error);
+                console.error('Error fetching current track:', error);
             }
         };
 
-        fetchNowPlaying();
+        getCurrentTrack();
     }, []);
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-             <Image src="/images/spotify.svg" alt="Spotify" width={24} height={24}/>
+        <div>
+            {currenTrack ? 
+                <div className="relative flex justify-center items-center h-screen w-screen bg-white">
+                    <div className="absolute inset-0" style={{ background: `url(${currenTrack.image}) center center / cover no-repeat`, filter: 'blur(30px) opacity(0.7)' }}></div>
+                    <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-center bg-whiter">
+                        <img src={currenTrack.image} alt="Album cover" width={300} height={300} />
+                        <div className="sm:ml-4 mt-4 sm:mt-0 text-center sm:text-left flex flex-col justify-center text-black">
+                            <h1 className="text-4xl font-bold">{currenTrack.name}</h1>
+                            <h2 className="text-2xl font-bold">{currenTrack.artist}</h2>
+                        </div>
+                    </div>
+                </div>
+            : 
+            <div className='flex justify-center items-center h-screen w-screen bg-green-500'>
+                <img src="/images/spotify.svg" alt="Spotify" style={{ height: '25vh' }} />
+            </div>
+            }
         </div>
     )
 }

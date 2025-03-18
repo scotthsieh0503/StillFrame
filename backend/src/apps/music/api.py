@@ -15,28 +15,11 @@ def save_spotify_settings():
     settings = music_app.save_spotify_settings(client_id, client_secret)
     return jsonify(settings)
 
-@music_bp.route('/currently-playing/image', methods=['GET'])
-def get_currently_playing_image():
-    music_app = MusicApp(settings_service.get_settings())
-    image = music_app.get_image()
-    img_io = BytesIO()
-    image.save(img_io, 'JPEG')
-    img_io.seek(0)
-    return send_file(img_io, mimetype='image/jpeg')
-
 @music_bp.route('/currently-playing', methods=['GET'])
 def get_currently_playing():
     music_app = MusicApp(settings_service.get_settings())
     current_track = music_app.get_currently_playing_track()
     return jsonify(current_track)
 
-@music_bp.route('/spotify/callback', methods=['GET'])
-# used to get the access token and refresh token
-def spotify_call_back():
-    code = request.args.get('code')
-    client_id = settings_service.get_settings().get('SPOTIFY').get('CLIENT_ID')
-    client_secret = settings_service.get_settings().get('SPOTIFY').get('CLIENT_SECRET')
-    tokens = music_service.generate_tokens(client_id=client_id, client_secret=client_secret, code=code)
 
-    return jsonify(tokens)
 
