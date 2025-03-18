@@ -19,7 +19,7 @@ def get_image():
         width, height = 800, 480
     else:
         width, height = 480, 800
-    os.system(f'chromium-browser --headless --disable-logging --screenshot={tmp_file_name} --window-size={width},{height} http://localhost:3000/music/currently-playing')
+    os.system(f'chromium-browser --headless --no-sandbox --disable-logging --screenshot={tmp_file_name} --window-size={width},{height} http://localhost:3000/music/currently-playing')
 
     image = Image.open(tmp_file_name)
     return image
