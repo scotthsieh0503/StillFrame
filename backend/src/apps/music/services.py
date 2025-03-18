@@ -12,14 +12,14 @@ def get_currently_playing_track():
     current_track = make_request(url)
     return current_track
 
-def generate_image_from_url(url):
+def get_image():
     tmp_file_name = "album_art.png"
     display_setting = settings_service.get_setting('DISPLAY')
     if display_setting['ORIENTATION'] == 'landscape':
         width, height = 800, 480
     else:
         width, height = 480, 800
-    os.system(f'chromium-browser --headless --no-sandbox --disable-logging --screenshot={tmp_file_name} --window-size={width},{height} http://localhost:3000/music/currently-playing')
+    os.system(f'chromium-browser --headless --disable-logging --screenshot={tmp_file_name} --window-size={width},{height} http://localhost:3000/music/currently-playing')
 
     image = Image.open(tmp_file_name)
     return image

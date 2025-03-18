@@ -12,12 +12,7 @@ class MusicApp(BaseApp):
 
     def get_image(self):
         if not self.image: 
-            tmp_file_name = "album_art.png"
-            display_setting = self.settings.get('display', 'landscape')
-            width, height = (800, 480) if display_setting == 'landscape' else (480, 800)
-            os.system(f'chromium-browser --headless --screenshot={tmp_file_name} --window-size={width},{height} http://localhost:3000/music/currently-playing')
-            self.image = Image.open(tmp_file_name)
-
+            self.image = music_service.get_image()
         return self.image
     
     def get_currently_playing_track(self):
