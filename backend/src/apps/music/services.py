@@ -16,10 +16,13 @@ def get_image():
     tmp_file_name = "album_art.png"
     display_setting = settings_service.get_setting('DISPLAY')
     if display_setting['ORIENTATION'] == 'landscape':
-        width, height = 800, 480
+        width, height = 1920, 1080
     else:
-        width, height = 480, 800
-    os.system(f'chromium-browser --headless --no-sandbox --disable-logging --screenshot={tmp_file_name} --window-size={width},{height} http://localhost:3000/music/currently-playing')
+        width, height = 1080, 1920
+    if os.getenv('FLASK_ENV') == 'production':
+        os.system(f'chromium --headless --disable-gpu --no-sandbox --disable-logging --screenshot={tmp_file_name} --virtual-time-budget=5000 --window-size={width},{height} http://localhost:3000/music/currentTrack')
+    else:
+        os.system(f'chromium --headless --disable-gpu --no-sandbox --disable-logging --screenshot={tmp_file_name} --virtual-time-budget=5000 --window-size={width},{height} http://localhost:3303/music/currentTrack')
 
     image = Image.open(tmp_file_name)
     return image
