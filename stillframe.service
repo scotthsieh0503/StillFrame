@@ -6,7 +6,6 @@ After=network.target
 ExecStart=/usr/bin/bash /app/StillFrame/start.sh
 Restart=always  # Optional: restart if it fails
 RestartSec=5    # Optional: delay between restart attempts
-User=root  # Use root user for the service
 
 [Install]
 WantedBy=multi-user.target
