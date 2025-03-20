@@ -26,19 +26,13 @@ def get_image():
         browser = playwright.firefox.launch(headless=True)
         page = browser.new_page()
         page.set_viewport_size({"width": width, "height": height})
-        page.goto(url)
+        page.goto(url, timeout=120000)  # Set timeout to 2 minutes (120000 ms)
         page.wait_for_timeout(2000)
         page.screenshot(path=tmp_file_name)
         browser.close()
 
     image = Image.open(tmp_file_name)
     return image
-
-
-
-
-
-
 
 def save_spotify_settings(client_id, client_secret):
     settings = settings_service.get_settings()
