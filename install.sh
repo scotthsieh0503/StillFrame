@@ -11,6 +11,9 @@ source .venv/bin/activate
 # Upgrade pip to the latest version
 echo "Installing ..."
 pip install -r requirements.txt --quiet
+echo "Install playwright browser"
+playwright install
+echo "Complete"
 
 # install serve
 cd ../frontend
