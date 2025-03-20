@@ -32,8 +32,8 @@ export default function CurrenTrack() {
             {currenTrack ? 
                 <div className="relative flex justify-center items-center h-screen w-screen bg-white">
                     <div className="absolute inset-0" style={{ background: `url(${currenTrack.image}) center center / cover no-repeat`, filter: 'blur(30px) opacity(0.7)' }}></div>
-                    <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-center bg-whiter">
-                        <img src={currenTrack.image} alt="Album cover" width={300} height={300} />
+                    <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-center bg-whiter m-10">
+                        <img src={currenTrack.image} alt="Album cover" style={{ maxHeight: '50vh', maxWidth: '50vw', width: 'auto', height: 'auto' }} />
                         <div className="sm:ml-4 mt-4 sm:mt-0 text-center sm:text-left flex flex-col justify-center text-black">
                             <h1 className="text-4xl font-bold">{currenTrack.name}</h1>
                             <h2 className="text-2xl font-bold">{currenTrack.artist}</h2>

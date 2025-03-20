@@ -21,5 +21,16 @@ def get_currently_playing():
     current_track = music_app.get_currently_playing_track()
     return jsonify(current_track)
 
+@music_bp.route('/currently-playing/image', methods=['GET'])
+def get_currently_playing_image():
 
+    image = music_service.get_image()
+    image_data = BytesIO()
+    image.save(image_data, format='PNG')
+    image_data.seek(0)
+
+    if not image_data:
+        return jsonify({"error": "Image not found"}), 404
+
+    return send_file(image_data, mimetype='image/png')
 

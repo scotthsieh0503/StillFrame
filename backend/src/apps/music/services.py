@@ -4,7 +4,7 @@ import requests
 import base64
 import src.apps.settings.services as settings_service
 from PIL import Image
-
+from playwright.sync_api import Page, sync_playwright
 IMAGE_DIR = "image/"
 
 def get_currently_playing_track():
@@ -16,13 +16,20 @@ def get_image():
     tmp_file_name = "album_art.png"
     display_setting = settings_service.get_setting('DISPLAY')
     if display_setting['ORIENTATION'] == 'landscape':
-        width, height = 1920, 1080
+        width, height = 800, 480
     else:
-        width, height = 1080, 1920
-    if os.getenv('FLASK_ENV') == 'production':
-        os.system(f'chromium --headless --disable-gpu --no-sandbox --disable-logging --screenshot={tmp_file_name} --virtual-time-budget=5000 --window-size={width},{height} http://localhost:3000/music/currentTrack')
-    else:
-        os.system(f'chromium --headless --disable-gpu --no-sandbox --disable-logging --screenshot={tmp_file_name} --virtual-time-budget=5000 --window-size={width},{height} http://localhost:3303/music/currentTrack')
+        width, height = 480, 800
+
+    url = "http://localhost:3000/music/currentTrack" if os.getenv('FLASK_ENV') == 'production' else "http://frontend:3000/music/currentTrack"
+
+    with sync_playwright() as playwright:
+        browser = playwright.firefox.launch(headless=True)
+        page = browser.new_page()
+        page.set_viewport_size({"width": width, "height": height})
+        page.goto(url)
+        page.wait_for_timeout(2000)
+        page.screenshot(path=tmp_file_name)
+        browser.close()
 
     image = Image.open(tmp_file_name)
     return image
