@@ -34,3 +34,13 @@ def get_currently_playing_image():
 
     return send_file(image_data, mimetype='image/png')
 
+@music_bp.route('/currently-playing/image/PIL', methods=['GET'])
+def get_currently_playing_image_pil():
+
+    music_app = MusicApp(settings_service.get_settings())
+    image = music_app.get_image()
+    image_data = BytesIO()
+    image.save(image_data, format='JPEG')
+    image_data.seek(0)
+
+    return send_file(image_data, mimetype='image/JPEG')

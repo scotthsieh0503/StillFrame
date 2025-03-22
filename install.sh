@@ -5,6 +5,9 @@ sudo apt-get update
 # these are the packages required to run playwright
 sudo apt-get install -y libpci3 libx11-dev libgtk-3-0 libdbus-1-3 libegl1-mesa libgles2-mesa xvfb firefox-esr libgtk-4-1 libgraphene-1.0-0
 
+# install noto fonts
+sudo apt-get install -y fonts-noto
+
 
 # Create a virtual environment in the .venv directory
 cd backend

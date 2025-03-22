@@ -5,7 +5,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 # install chrome
 RUN apt-get update
-RUN apt-get install libpci3 libx11-dev libgtk-3-0 libdbus-1-3 libegl1-mesa libgles2-mesa xvfb firefox-esr -y
+RUN apt-get install libpci3 libx11-dev libgtk-3-0 libdbus-1-3 libegl1-mesa libgles2-mesa xvfb firefox-esr fonts-noto -y
 
 COPY . .
 EXPOSE 5000

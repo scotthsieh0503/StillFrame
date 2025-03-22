@@ -1,5 +1,4 @@
 import os
-from PIL import Image
 from src.apps.base_app import BaseApp
 import src.apps.music.services as music_service
 
@@ -11,22 +10,11 @@ class MusicApp(BaseApp):
         self.current_track = {} # Current track being played
 
     def get_image(self):
-        if not self.image: 
-            self.image = music_service.get_image()
+        self.image = music_service.generate_image()
         return self.image
     
     def get_currently_playing_track(self):
-        current_track = self.current_track or {}
-        try:
-            result = music_service.get_currently_playing_track()
-            print(result)
-            current_track['name'] = result['item']['name']
-            current_track['artist'] = result['item']['artists'][0]['name']
-            current_track['image'] = result['item']['album']['images'][0]['url']
-        except Exception as e:
-            raise e
-            
-        self.current_track = current_track
-        return current_track
+        self.current_track = music_service.get_currently_playing_track()
+        return self.current_track
             
         
