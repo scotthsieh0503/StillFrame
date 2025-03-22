@@ -90,8 +90,7 @@ def generate_image():
     # Create a blurred background using the album art
     blurred_background = album_art.resize((800, 800))
     blurred_background = blurred_background.filter(ImageFilter.GaussianBlur(10))
-    # Set opacity to 50%
-    alpha = Image.new('L', blurred_background.size, 179)  # 179 is 70% opacity
+    alpha = Image.new('L', blurred_background.size, 153)  # 153 is 60% opacity
     blurred_background.putalpha(alpha)
     
     new_img.paste(blurred_background, (0, 0), blurred_background)
@@ -107,9 +106,9 @@ def generate_image():
   
     
     song_name = f"{current_track['name']}"
-    song_name_font = ImageFont.truetype("NotoSans-Regular.ttf", 30)  
+    song_name_font = ImageFont.truetype("NotoSansCJK-Regular.ttc", 30)  
     artist = f"{current_track['artist']}"
-    artist_font = ImageFont.truetype("NotoSans-Regular.ttf", 20)  
+    artist_font = ImageFont.truetype("NotoSansCJK-Regular.ttc", 20)  
     draw.text(song_name_position, song_name, fill=(0, 0, 0), font=song_name_font)
     draw.text(artist_name_position, artist, fill=(0, 0, 0), font=artist_font)
 
