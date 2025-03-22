@@ -63,18 +63,26 @@ def generate_image():
         }
         background_color = (255, 255, 255)
         album_art = Image.open('src/apps/music/assets/spotify.png')
-    
+
     # Set height and width based on display setting
     if orientation == 'portrait':
         width, height = 480, 800
         album_art_position = (120, 80)
         song_name_position = (album_art_position[0], album_art_position[1] + album_art_size[1] + height/4 )
         artist_name_position = (song_name_position[0], song_name_position[1] + 45)
+        text_length = 20
     else:  
         width, height = 800, 480
         album_art_position = (80, 120)
         song_name_position = ((album_art_position[0] + album_art_size[0]) + 20, (album_art_position[1] + album_art_size[1])/2 )
         artist_name_position = (song_name_position[0], song_name_position[1] + 45)
+        text_length = 28
+
+    # truncate song name and artist name if they are too long
+    if len(current_track['name']) > text_length:
+        current_track['name'] = current_track['name'][:text_length] + "..."
+    if len(current_track['artist']) > text_length:
+        current_track['artist'] = current_track['artist'][:text_length] + "..."
     
     # Create a new image with white background
     new_img = Image.new('RGB', (width, height), background_color)
