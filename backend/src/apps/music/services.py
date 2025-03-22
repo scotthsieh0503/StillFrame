@@ -91,7 +91,7 @@ def generate_image():
     blurred_background = album_art.resize((800, 800))
     blurred_background = blurred_background.filter(ImageFilter.GaussianBlur(10))
     # Set opacity to 50%
-    alpha = Image.new('L', blurred_background.size, 128)  # 128 is 50% opacity
+    alpha = Image.new('L', blurred_background.size, 179)  # 179 is 70% opacity
     blurred_background.putalpha(alpha)
     
     new_img.paste(blurred_background, (0, 0), blurred_background)
@@ -115,9 +115,6 @@ def generate_image():
 
     # Save the image
     new_img.save(tmp_file_name)
-    # rotate image if orientation is portrait
-    if orientation == 'portrait':
-        new_img = new_img.rotate(90, expand=True)
 
     return new_img
 
