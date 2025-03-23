@@ -33,7 +33,20 @@ def get_image():
     url = "http://localhost:3000/music/currentTrack" if os.getenv('FLASK_ENV') == 'production' else "http://frontend:3000/music/currentTrack"
 
     with sync_playwright() as playwright:
-        browser = playwright.firefox.launch(headless=True, args=['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-remote', '--safe-mode'])
+       # browser = playwright.firefox.launch(headless=True, args=['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-remote', '--safe-mode'])
+        browser = playwright.chromium.launch(
+            headless=True,
+            args=[
+            "--disable-gpu",
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-software-rasterizer",
+            "--single-process",
+            "--disable-background-networking",
+            "--disable-extensions",
+            "--disable-sync",
+            ]
+        )
         page = browser.new_page()
         page.set_viewport_size({"width": width, "height": height})
         page.goto(url, timeout=120000)  # Set timeout to 2 minutes (120000 ms)
