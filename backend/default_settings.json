@@ -1,13 +1,18 @@
 {
-    "MODE": "photo",
-    "UPDATE_INTERVAL": 300,
     "DISPLAY": {
-        "SATURATION": 0.8,
-        "CONTRAST": 1.0,
-        "ORIENTATION": "landscape"
+        "CONTRAST": 0.6,
+        "ORIENTATION": "landscape",
+        "SATURATION": 0.9
     },
+    "UPDATE_INTERVAL": 60,
+    "MODE": "photo",
     "SPOTIFY": {
-        "CLIENT_ID": "ENTER HERE",
-        "CLIENT_SECRET": "ENTER HERE"
+        "CLIENT_ID": "",
+        "CLIENT_SECRET": "",
+        "REFRESH_TOKEN": "",
+        "ACCESS_TOKEN": "",
+        "MODE": "default",
+        "BLUR": "25",
+        "OPACITY": "0.7"
     }
 }
