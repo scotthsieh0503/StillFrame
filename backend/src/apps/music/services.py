@@ -14,7 +14,7 @@ def get_currently_playing_track():
     current_track = {}
     try:
         current_track['name'] = response['item']['name']
-        current_track['artist'] = response['item']['artists'][0]['name']
+        current_track['artist'] = ", ".join(artist['name'] for artist in response['item']['artists'])
         current_track['image'] = response['item']['album']['images'][0]['url']
     except Exception as e:
         raise e
@@ -61,8 +61,13 @@ def get_image():
 def generate_image():
     tmp_file_name = "album_art.png"
     display_setting = settings_service.get_setting('DISPLAY')
+    music_setting = settings_service.get_setting('SPOTIFY')
     album_art_size = (240, 240)
     orientation = display_setting['ORIENTATION']
+    opacity = round(float(music_setting.get('OPACITY', 0.6)) * 255)  # 255 is 100% opacity
+    blur = int(music_setting.get('BLUR', 10))
+
+    mode = music_setting.get('MODE', 'default')
 
     try:
         current_track = get_currently_playing_track()
@@ -72,7 +77,7 @@ def generate_image():
     except Exception as e:
         current_track = {
             'name': 'No song playing',
-            'artist': 'Test',
+            'artist': '',
         }
         background_color = (255, 255, 255)
         album_art = Image.open('src/apps/music/assets/spotify.png')
@@ -102,8 +107,8 @@ def generate_image():
 
     # Create a blurred background using the album art
     blurred_background = album_art.resize((800, 800))
-    blurred_background = blurred_background.filter(ImageFilter.GaussianBlur(10))
-    alpha = Image.new('L', blurred_background.size, 153)  # 153 is 60% opacity
+    blurred_background = blurred_background.filter(ImageFilter.GaussianBlur(blur))
+    alpha = Image.new('L', blurred_background.size, opacity)  # 153 is 60% opacity
     blurred_background.putalpha(alpha)
     
     new_img.paste(blurred_background, (0, 0), blurred_background)
@@ -112,7 +117,8 @@ def generate_image():
     album_art.thumbnail(album_art_size)
 
     # album art position
-    new_img.paste(album_art, album_art_position)
+    if mode == 'default':
+        new_img.paste(album_art, album_art_position)
     
     # Add text to the image
     draw = ImageDraw.Draw(new_img)
@@ -129,17 +135,6 @@ def generate_image():
     new_img.save(tmp_file_name)
 
     return new_img
-
-
-def save_spotify_settings(client_id, client_secret):
-    settings = settings_service.get_settings()
-    settings['SPOTIFY'] = {
-        'CLIENT_ID': client_id,
-        'CLIENT_SECRET': client_secret,
-    }
-    settings_service.update_settings(settings)
-    return settings
-
 
 def make_request(url, method='GET', data=None):
     settings = settings_service.get_settings()

@@ -6,15 +6,6 @@ import src.apps.music.services as music_service
 import random
 from io import BytesIO
 
-@music_bp.route('/settings', methods=['POST'])
-def save_spotify_settings():
-    data = request.json
-    client_id = data.get('CLIENT_ID')
-    client_secret = data.get('CLIENT_SECRET')
-    music_app = MusicApp(settings_service.get_settings())
-    settings = music_app.save_spotify_settings(client_id, client_secret)
-    return jsonify(settings)
-
 @music_bp.route('/currently-playing', methods=['GET'])
 def get_currently_playing():
     music_app = MusicApp(settings_service.get_settings())
