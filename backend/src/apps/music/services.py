@@ -96,6 +96,17 @@ def generate_image():
         artist_name_position = (song_name_position[0], song_name_position[1] + 45)
         text_length = 28
 
+    if mode == 'fullscreen':
+        song_name_font_size = 30
+        artist_font_size = 30
+        song_name_position = (10, (height - 60))
+        artist_name_position_x = max(width / 2, width - artist_font_size * len(current_track['artist']) * 0.6 - 10)  # Adjusting for font size to pixel ratio
+        artist_name_position = (artist_name_position_x, (height - 60))
+    elif mode == 'default':
+        song_name_font_size = 30
+        artist_font_size = 20
+
+
     # truncate song name and artist name if they are too long
     if len(current_track['name']) > text_length:
         current_track['name'] = current_track['name'][:text_length] + "..."
@@ -119,15 +130,21 @@ def generate_image():
     # album art position
     if mode == 'default':
         new_img.paste(album_art, album_art_position)
+    if mode == 'fullscreen':
+        overlay = Image.new('RGBA', (width, 60), (255, 255, 255, 75))
+        new_img.paste(overlay, (0, height - 60), overlay)
+  
+
     
     # Add text to the image
     draw = ImageDraw.Draw(new_img)
-  
+
+
     
     song_name = f"{current_track['name']}"
-    song_name_font = ImageFont.truetype("NotoSansCJK-Regular.ttc", 30)  
+    song_name_font = ImageFont.truetype("NotoSansCJK-Regular.ttc", song_name_font_size)  
     artist = f"{current_track['artist']}"
-    artist_font = ImageFont.truetype("NotoSansCJK-Regular.ttc", 20)  
+    artist_font = ImageFont.truetype("NotoSansCJK-Regular.ttc", artist_font_size)  
     draw.text(song_name_position, song_name, fill=(0, 0, 0), font=song_name_font)
     draw.text(artist_name_position, artist, fill=(0, 0, 0), font=artist_font)
 
