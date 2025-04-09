@@ -119,10 +119,10 @@ def generate_image():
     # Create a blurred background using the album art
     blurred_background = album_art.resize((800, 800))
     blurred_background = blurred_background.filter(ImageFilter.GaussianBlur(blur))
-    alpha = Image.new('L', blurred_background.size, opacity)  # 153 is 60% opacity
+    alpha = Image.new('L', blurred_background.size, opacity)  
     blurred_background.putalpha(alpha)
-    
-    new_img.paste(blurred_background, (0, 0), blurred_background)
+    background_position = (round(width/2 - blurred_background.size[0]/2), round(height/2 - blurred_background.size[1]/2))
+    new_img.paste(blurred_background, background_position, blurred_background)
 
     # Scale album art to fit within the new image
     album_art.thumbnail(album_art_size)
